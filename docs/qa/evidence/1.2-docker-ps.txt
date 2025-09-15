@@ -1,0 +1,76 @@
+NAMES                          STATUS                 PORTS
+mcp-farm-traefik-1             Up 8 seconds           0.0.0.0:18880->80/tcp, [::]:18880->80/tcp, 0.0.0.0:18443->443/tcp, [::]:18443->443/tcp
+mcp-farm-keycloak-1            Up About a minute      8080/tcp, 8443/tcp, 9000/tcp
+codex-dev-app-dev-1            Up 19 minutes          127.0.0.1:18010->11435/tcp
+determined_swartz              Up About an hour       
+trusting_varahamihira          Up About an hour       
+priceless_liskov               Up 2 hours             
+condescending_nash             Up 2 hours             
+trusting_mirzakhani            Up 3 hours             
+xenodochial_lamport            Up 3 hours             
+lucid_margulis                 Up 3 hours             
+laughing_aryabhata             Up 3 hours             
+objective_ishizaka             Up 3 hours             
+dazzling_chatterjee            Up 3 hours             
+intelligent_engelbart          Up 3 hours             
+optimistic_williams            Up 3 hours             
+modest_neumann                 Up 3 hours             
+blissful_chatterjee            Up 5 hours             
+naughty_napier                 Up 6 hours             
+magical_maxwell                Up 6 hours             
+awesome_perlman                Up 6 hours             
+loving_lehmann                 Up 6 hours             
+cranky_saha                    Up 6 hours             
+hopeful_cohen                  Up 6 hours             
+flamboyant_allen               Up 7 hours             
+hopeful_hawking                Up 7 hours             
+vigilant_khorana               Up 7 hours             
+silly_ptolemy                  Up 7 hours             
+quirky_haslett                 Up 7 hours             
+hardcore_fermi                 Up 7 hours             
+hopeful_brown                  Up 8 hours             
+stupefied_saha                 Up 8 hours             
+determined_gauss               Up 8 hours             
+priceless_leavitt              Up 8 hours             
+funny_booth                    Up 8 hours             
+festive_germain                Up 8 hours             
+openmemory-openmemory-mcp-1    Up 24 hours            8765/tcp
+openmemory-auth-service-1      Up 24 hours            8080/tcp
+keycloak-keycloak-1            Up 25 hours            8443/tcp, 127.0.0.1:5050->8080/tcp, 127.0.0.1:59000->9000/tcp
+affectionate_johnson           Up 34 hours            
+elated_colden                  Up 37 hours            
+naughty_heisenberg             Up 38 hours            
+objective_lewin                Up 47 hours            
+codex-dev-auth-dev-1           Up 2 days              127.0.0.1:18081->8080/tcp
+busy_wright                    Up 3 days              
+interesting_lehmann            Up 3 days              
+admiring_jennings              Up 3 days              
+openmemory-openmemory-api-1    Up 4 days              127.0.0.1:8765->8765/tcp
+quirky_booth                   Up 4 days              
+codex-completions-api-app-1    Up 4 days              127.0.0.1:11435->11435/tcp
+codex-completions-api-auth-1   Up 4 days              127.0.0.1:18080->8080/tcp
+optimistic_montalcini          Up 5 days              
+openmemory-openmemory-ui-1     Up 5 days              127.0.0.1:3000->3000/tcp
+openmemory-postgres-1          Up 5 days              5432/tcp
+openmemory-neo4j-1             Up 5 days (healthy)    7473-7474/tcp, 7687/tcp
+openmemory-qdrant-1            Up 5 days              6333-6334/tcp
+funny_shannon                  Up 5 days              
+eloquent_mayer                 Up 7 days              
+om_neo4j                       Up 10 days             0.0.0.0:7474->7474/tcp, [::]:7474->7474/tcp, 7473/tcp, 0.0.0.0:7687->7687/tcp, [::]:7687->7687/tcp
+om_postgres                    Up 10 days             0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+om_qdrant                      Up 10 days             0.0.0.0:6333->6333/tcp, [::]:6333->6333/tcp, 6334/tcp
+lucid_varahamihira             Up 10 days             
+hbbr                           Up 10 days             0.0.0.0:21117->21117/tcp, [::]:21117->21117/tcp, 0.0.0.0:21119->21119/tcp, [::]:21119->21119/tcp
+hbbs                           Up 10 days             0.0.0.0:21115-21116->21115-21116/tcp, [::]:21115-21116->21115-21116/tcp, 0.0.0.0:21116->21116/udp, [::]:21116->21116/udp
+portainer-oma                  Up 10 days             8000/tcp, 9000/tcp, 9443/tcp
+google-workspace-mcp           Up 10 days (healthy)   8000/tcp, 0.0.0.0:9005->9005/tcp, [::]:9005->9005/tcp
+privacy-policy-privacy-1       Up 10 days             80/tcp
+openapi-rewrite                Up 10 days             8016/tcp
+mcpo                           Up 10 days (healthy)   8015/tcp
+keycloak-postgres-1            Up 10 days (healthy)   5432/tcp
+cupcake-mcp                    Up 10 days             8090/tcp
+n8n-oma                        Up 10 days             5678/tcp
+n8n-postgres                   Up 10 days (healthy)   5432/tcp
+notes-static-oma               Up 10 days             80/tcp, 443/tcp, 2019/tcp, 443/udp
+n8n-redis                      Up 10 days (healthy)   6379/tcp
+coa-static-oma                 Up 10 days             80/tcp, 443/tcp, 2019/tcp, 443/udp

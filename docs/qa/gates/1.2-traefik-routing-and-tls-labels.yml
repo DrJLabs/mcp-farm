@@ -1,0 +1,31 @@
+story: "1.2 — Traefik Routing + TLS Labels"
+id: "1.2"
+slug: "traefik-routing-and-tls-labels"
+date: "2025-09-15"
+epic: 1
+decision: PASS
+rationale: |
+  Configuration and labels meet PRD FR5 and architecture guidance. Runtime HTTPS
+  health evidence captured via Traefik on local alt port with SNI host override.
+conditions_to_pass:
+  - Attach curl output (done): `curl -sS -k --resolve mcp.localhost:18443:127.0.0.1 https://mcp.localhost:18443/healthz | jq` → { "ok": true }
+  - Confirm no static Traefik config mounts (labels only) — verified by mounts JSON
+  - Backend bind reachable from Traefik network — implied by successful routing
+inputs:
+  - docs/stories/1.2.traefik-routing-and-tls-labels.md
+  - docs/qa/assessments/1.2-trace-20250915.md
+  - docs/qa/assessments/1.2-risk-profile-20250915.md
+  - docs/qa/assessments/1.2-nfr-20250915.md
+  - docs/qa/assessments/1.2-test-design-20250915.md
+  - docs/qa/assessments/1.2-review-20250915.md
+frnfr_map:
+  FR5: PASS
+  NFR5: PASS
+  NFR1: PASS
+  NFR4: PARTIAL
+evidence:
+  - docs/qa/evidence/1.2-healthz-https-status.txt
+  - docs/qa/evidence/1.2-healthz-https-body.json
+  - docs/qa/evidence/1.2-healthz-https-headers.txt
+  - docs/qa/evidence/1.2-docker-ps.txt
+  - docs/qa/evidence/1.2-traefik-mounts.json
