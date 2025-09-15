@@ -27,9 +27,11 @@ __pycache__/
 venv/
 
 # Env / local config
+# Ignore real env files, but keep examples checked in
 .env
 .env.*
-.env.local
+!.env.example
+!.env.*.example
 .envrc
 
 # Editors/IDE
