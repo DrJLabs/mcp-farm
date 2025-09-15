@@ -1,0 +1,21 @@
+story: "1.1 Bootstrap Env and Healthcheck"
+id: "1.1"
+slug: "bootstrap-env-and-healthcheck"
+epic: 1
+date: "2025-09-15"
+decision: PASS
+rationale: |
+  All acceptance criteria satisfied:
+  - Env template includes BIND_HOST=0.0.0.0 and BIND_PORT=8000 with clear comments.
+  - Health endpoint GET /healthz returns 200 application/json {"ok":true} verified via local curl.
+  - Works via direct bind without Traefik in dev.
+  Supporting artifacts: Trace, NFR (PASS), PO Validation (PASS), Test Design, Risk profile.
+evidence:
+  - docs/stories/1.1.bootstrap-env-and-healthcheck.md
+  - docs/qa/assessments/1.1-trace-20250915.md
+  - docs/qa/assessments/1.1-nfr-20250915.md
+  - docs/qa/assessments/1.1-po-validation-20250915.md
+  - docs/qa/assessments/1.1-test-design-20250915.md
+  - docs/qa/assessments/1.1-risk-20250915.md
+notes: |
+  Suggest adding a minimal unit test for /healthz using Starlette TestClient in a follow-up.
