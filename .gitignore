@@ -1,0 +1,44 @@
+# BMAD (local only)
+
+# General
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Node / JS
+node_modules/
+dist/
+build/
+.pnpm-store/
+.turbo/
+.parcel-cache/
+.next/
+coverage/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Env / local config
+.env
+.env.*
+.env.local
+.envrc
+
+# Editors/IDE
+.idea/
+.vscode/
+.history/
+
+# OS / misc
+.cache/
+
+# Project docs not tracked
+/docs/chatgpt-mcp info primers/
