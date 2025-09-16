@@ -1,0 +1,52 @@
+schema: 1
+story: '1.3'
+story_title: 'Story 1.3: PRM and 401 Hint'
+gate: PASS
+status_reason: 'PRM metadata and 401 enforcement validated via automated tests and captured evidence; no outstanding gaps.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-09-16T00:00:00Z'
+quality_score: 92
+expires: '2025-09-30T00:00:00Z'
+
+top_issues: []
+waiver:
+  active: false
+
+evidence:
+  tests_reviewed: 5
+  risks_identified: 0
+  trace:
+    ac_covered: [1, 2, 3, 4, 5]
+    ac_gaps: []
+
+trace:
+  totals:
+    requirements: 5
+    full: 5
+    partial: 0
+    none: 0
+  planning_ref: 'docs/qa/assessments/1.3-test-design-20250916.md'
+  uncovered: []
+  notes: 'See docs/qa/assessments/1.3-trace-20250916.md'
+
+nfr_validation:
+  _assessed: [security, performance, reliability, maintainability]
+  security:
+    status: PASS
+    notes: '401 enforcement + PRM metadata validated via tests and evidence.'
+  performance:
+    status: PASS
+    notes: 'Static JSON response with cache-control; no additional latency sources.'
+  reliability:
+    status: PASS
+    notes: 'Issuer toggle fallback verified; health route remains public.'
+  maintainability:
+    status: PASS
+    notes: 'Tests and utilities updated; no extra dependencies or config drift.'
+
+recommendations:
+  immediate: []
+ future:
+    - action: 'Automate JWKS availability smoke in S4 and add CI curl capture.'
+      refs:
+        - sample-deep-research-mcp/sample_mcp.py
