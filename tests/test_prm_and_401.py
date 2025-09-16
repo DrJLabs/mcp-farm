@@ -26,7 +26,7 @@ def test_prm_route_returns_expected_payload(auth_env):
     with TestClient(app) as client:
         response = client.get("/.well-known/oauth-protected-resource")
         assert response.status_code == 200
-        assert response.headers.get("cache-control") == "public, max-age=60"
+        assert response.headers.get("cache-control") == "public, max-age=3600"
         assert response.headers.get("content-type", "").split(";")[0] == "application/json"
         assert response.json() == {
             "resource": "https://mcp.localhost",
@@ -43,6 +43,9 @@ def test_unauthenticated_mcp_returns_401_with_prm_hint(auth_env):
         response = client.get("/mcp")
         assert response.status_code == 401
         header = response.headers.get("www-authenticate", "")
+        assert header.startswith("Bearer ")
+        assert 'error="invalid_token"' in header
+        assert 'error_description="Authentication required"' in header
         assert "resource_metadata=\"https://mcp.localhost/.well-known/oauth-protected-resource\"" in header
 
 

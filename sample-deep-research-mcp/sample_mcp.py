@@ -21,7 +21,14 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
             super().__init__(*args, base_url=base_url, **kwargs)
 
         def get_routes(self, mcp_path: str | None = None, mcp_endpoint: Any | None = None):  # type: ignore[override]
-            routes = super(RemoteAuthProvider, self).get_routes(mcp_path, mcp_endpoint)
+            routes = [
+                route
+                for route in super().get_routes(mcp_path, mcp_endpoint)
+                if not (
+                    isinstance(route, Route)
+                    and getattr(route, "path", None) == "/.well-known/oauth-protected-resource"
+                )
+            ]
             resource_value = self._cupcake_resource_url
             if resource_value:
                 auth_servers = [str(url) for url in self.authorization_servers]
@@ -39,7 +46,7 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
                         payload["resource_documentation"] = str(self.resource_documentation)
 
                     response = JSONResponse(payload)
-                    response.headers["Cache-Control"] = "public, max-age=60"
+                    response.headers["Cache-Control"] = "public, max-age=3600"
                     return response
 
                 endpoint = prm_endpoint
@@ -68,8 +75,6 @@ except ModuleNotFoundError:  # pragma: no cover
         cors_middleware = None  # type: ignore
         Route = None  # type: ignore
         CupcakeRemoteAuthProvider = None  # type: ignore
-else:
-    CupcakeRemoteAuthProvider = CupcakeRemoteAuthProvider  # type: ignore
 from pydantic import BaseModel
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
@@ -109,6 +114,8 @@ def create_server() -> FastMCP:
     """
 
     mcp = FastMCP(name="Cupcake MCP", instructions="Search cupcake orders")
+    # Default to auth disabled; conditional below may replace with provider instance
+    mcp.auth = None  # type: ignore[attr-defined]
 
     # Configure auth (PRM + 401 + JWT verify) when issuer is provided
     issuer = _env("KC_ISSUER")
