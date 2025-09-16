@@ -1,0 +1,23 @@
+services:
+  mcp:
+    build:
+      context: ./sample-deep-research-mcp
+    env_file: .env
+    environment:
+      BIND_HOST: ${BIND_HOST:-0.0.0.0}
+      BIND_PORT: ${BIND_PORT:-8000}
+      TRANSPORT: ${TRANSPORT:-sse}
+      # Sensitive/tenant-specific (set only in your private .env)
+      MCP_SERVER_URL: ${MCP_SERVER_URL:-}
+      KC_ISSUER: ${KC_ISSUER:-}
+      OIDC_ISSUER: ${OIDC_ISSUER:-}
+      MCP_AUDIENCE: ${MCP_AUDIENCE:-}
+      OIDC_AUDIENCE: ${OIDC_AUDIENCE:-}
+    expose:
+      - "8000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mcp.rule=Host(`${MCP_HOST:-mcp.localhost}`)
+      - traefik.http.routers.mcp.entrypoints=websecure
+      - traefik.http.routers.mcp.tls=true
+      - traefik.http.services.mcp.loadbalancer.server.port=8000
