@@ -46,7 +46,7 @@ nfr_validation:
 
 recommendations:
   immediate: []
- future:
+  future:
     - action: 'Automate JWKS availability smoke in S4 and add CI curl capture.'
       refs:
         - sample-deep-research-mcp/sample_mcp.py
