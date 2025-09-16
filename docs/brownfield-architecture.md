@@ -231,7 +231,7 @@ CMD ["python", "sample_mcp.py"]
 
 ```yaml
 # ./compose.yaml (reference)
-version: '3.9'
+version: "3.9"
 services:
   traefik:
     image: traefik:v3.1
@@ -242,7 +242,7 @@ services:
       - --certificatesresolvers.dev.acme.tlschallenge=true
       - --certificatesresolvers.dev.acme.email=you@example.com
       - --certificatesresolvers.dev.acme.storage=/letsencrypt/acme.json
-    ports: ['80:80', '443:443']
+    ports: ["80:80", "443:443"]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik_data:/letsencrypt
@@ -254,11 +254,11 @@ services:
       MCP_SERVER_URL: https://mcp.localhost
       KC_ISSUER: https://auth.localhost/realms/mcp
       MCP_AUDIENCE: https://mcp.localhost
-      MCP_ALT_AUDIENCE: '' # optional fallback; leave empty by default
+      MCP_ALT_AUDIENCE: "" # optional fallback; leave empty by default
       BIND_HOST: 0.0.0.0
       BIND_PORT: 8000
       LOG_LEVEL: info
-    expose: ['8000']
+    expose: ["8000"]
     labels:
       - traefik.enable=true
       - traefik.http.routers.mcp.rule=Host(`mcp.localhost`)
@@ -272,12 +272,12 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0
-    command: ['start']
+    command: ["start"]
     environment:
       KC_PROXY: edge
       KC_HOSTNAME: auth.localhost
-      KC_HTTP_ENABLED: 'true'
-    expose: ['8080']
+      KC_HTTP_ENABLED: "true"
+    expose: ["8080"]
     labels:
       - traefik.enable=true
       - traefik.http.routers.kc.rule=Host(`auth.localhost`)
@@ -470,8 +470,12 @@ Sign‑Off
 - OAuth login via PRM:
   1. Client reads PRM; 2) Client discovers AS metadata; 3) Auth Code + PKCE; 4) Token; 5) Calls MCP with Bearer.
 - Authenticated Streamable‑HTTP tool call:
-  1. Client POSTs to `/mcp` with Bearer; 2) Server verifies JWT (iss/aud/exp/nbf);
-  2. Session established; 4) Tool executes; 5) Streamed chunks returned; 6) Audit log written.
+  1. Client POSTs to `/mcp` with Bearer.
+  2. Server verifies JWT (iss/aud/exp/nbf).
+  3. Session established.
+  4. Tool executes.
+  5. Streamed chunks returned.
+  6. Audit log written.
 - SSE fallback:
   1. Client connects `/sse`; 2) Messages via `/messages/`; 3) Same auth checks enforced.
 
@@ -501,21 +505,24 @@ Client (ChatGPT)          Traefik                   MCP Server                  
 
 ### Traefik Rate Limit Middleware (Example)
 
-Add this to compose labels to protect the MCP router:
+Add this to your service definition to protect the MCP router:
 
 ```yaml
-labels:
-  - traefik.enable=true
-  - traefik.http.routers.mcp.rule=Host(`mcp.localhost`)
-  - traefik.http.routers.mcp.entrypoints=websecure
-  - traefik.http.routers.mcp.tls=true
-  - traefik.http.routers.mcp.tls.certresolver=dev
-  - traefik.http.services.mcp.loadbalancer.server.port=8000
-  # Rate limit: average 50 rps with burst 25 over 1s per source IP
-  - traefik.http.middlewares.mcp-rl.ratelimit.average=50
-  - traefik.http.middlewares.mcp-rl.ratelimit.burst=25
-  - traefik.http.middlewares.mcp-rl.ratelimit.period=1s
-  - traefik.http.routers.mcp.middlewares=mcp-rl
+services:
+  mcp:
+    # ... other service config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mcp.rule=Host(`mcp.localhost`)
+      - traefik.http.routers.mcp.entrypoints=websecure
+      - traefik.http.routers.mcp.tls=true
+      - traefik.http.routers.mcp.tls.certresolver=dev
+      - traefik.http.services.mcp.loadbalancer.server.port=8000
+      # Rate limit: average 50 rps with burst 25 over 1s per source IP
+      - traefik.http.middlewares.mcp-rl.ratelimit.average=50
+      - traefik.http.middlewares.mcp-rl.ratelimit.burst=25
+      - traefik.http.middlewares.mcp-rl.ratelimit.period=1s
+      - traefik.http.routers.mcp.middlewares=mcp-rl
 ```
 
 ## Threat Model (STRIDE) & Controls
