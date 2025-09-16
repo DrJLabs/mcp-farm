@@ -1,0 +1,9 @@
+.bmad-core/
+.bmad-infrastructure-devops/
+docs/adr/
+docs/architecture/
+docs/prd/
+docs/qa/
+docs/evidence/
+AGENTS.md
+compose.yaml

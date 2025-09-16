@@ -30,7 +30,9 @@ def test_prm_route_returns_expected_payload():
         response = client.get("/.well-known/oauth-protected-resource")
         assert response.status_code == 200
         assert response.headers.get("cache-control") == "public, max-age=60"
-        assert response.headers.get("content-type", "").split(";")[0] == "application/json"
+        assert (
+            response.headers.get("content-type", "").split(";")[0] == "application/json"
+        )
         assert response.json() == {
             "resource": os.environ["MCP_SERVER_URL"],
             "authorization_servers": [os.environ["KC_ISSUER"]],

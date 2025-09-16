@@ -20,6 +20,7 @@ python sample_mcp.py
 ```
 
 Endpoints:
+
 - Streamable‑HTTP: `http://127.0.0.1:8000/mcp`
 - Health: `http://127.0.0.1:8000/healthz`
 
@@ -30,6 +31,7 @@ TRANSPORT=sse python sample_mcp.py
 ```
 
 With OAuth (Keycloak): set envs per `.env.example` in repo root:
+
 - `MCP_SERVER_URL`, `KC_ISSUER`, optional `KC_JWKS_URI`
 - `MCP_AUDIENCE` and optional `MCP_ALT_AUDIENCE`
 

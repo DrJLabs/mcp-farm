@@ -1,0 +1,18 @@
+fail_fast: false
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.7
+    hooks:
+      - id: ruff
+        name: ruff lint
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier (markdown/json/yaml)
+        entry: prettier --write
+        language: node
+        types_or: ['markdown', 'json', 'yaml']
+        additional_dependencies: ['prettier@3.3.2']

@@ -50,7 +50,9 @@ def build_test_app(*, enable_auth: bool, stream_path: str = "/mcp"):
         elif "auth_server_provider" in params:
             kwargs["auth_server_provider"] = auth_provider
         else:
-            raise RuntimeError("create_streamable_http_app has no supported auth parameter")
+            raise RuntimeError(
+                "create_streamable_http_app has no supported auth parameter"
+            )
 
     return create_streamable_http_app(**kwargs)
 
