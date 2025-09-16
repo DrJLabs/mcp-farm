@@ -1,0 +1,11 @@
+{
+  "resource": "https://mcp.localhost",
+  "authorization_servers": [
+    "https://auth.localhost/realms/mcp"
+  ],
+  "scopes_supported": [],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "resource_name": "Cupcake MCP"
+}
