@@ -35,6 +35,7 @@ def build_test_app(*, enable_auth: bool, stream_path: str = "/mcp"):
     sample = load_sample_module()
     server = sample.create_server()
     auth_provider = server.auth if enable_auth else None
+    # create_streamable_http_app accepts `auth` (alias for auth provider) in fastmcp>=2.5.
     return create_streamable_http_app(
         server=server,
         streamable_http_path=stream_path,
