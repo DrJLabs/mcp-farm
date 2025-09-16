@@ -33,6 +33,9 @@ venv/
 !.env.example
 !.env.*.example
 .envrc
+keycloak-info/
+fastmcp/
+.cursor/
 
 # Editors/IDE
 .idea/
