@@ -231,7 +231,7 @@ CMD ["python", "sample_mcp.py"]
 
 ```yaml
 # ./compose.yaml (reference)
-version: "3.9"
+version: '3.9'
 services:
   traefik:
     image: traefik:v3.1
@@ -242,7 +242,7 @@ services:
       - --certificatesresolvers.dev.acme.tlschallenge=true
       - --certificatesresolvers.dev.acme.email=you@example.com
       - --certificatesresolvers.dev.acme.storage=/letsencrypt/acme.json
-    ports: ["80:80", "443:443"]
+    ports: ['80:80', '443:443']
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik_data:/letsencrypt
@@ -254,11 +254,11 @@ services:
       MCP_SERVER_URL: https://mcp.localhost
       KC_ISSUER: https://auth.localhost/realms/mcp
       MCP_AUDIENCE: https://mcp.localhost
-      MCP_ALT_AUDIENCE: "" # optional fallback; leave empty by default
+      MCP_ALT_AUDIENCE: '' # optional fallback; leave empty by default
       BIND_HOST: 0.0.0.0
       BIND_PORT: 8000
       LOG_LEVEL: info
-    expose: ["8000"]
+    expose: ['8000']
     labels:
       - traefik.enable=true
       - traefik.http.routers.mcp.rule=Host(`mcp.localhost`)
@@ -272,12 +272,12 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0
-    command: ["start"]
+    command: ['start']
     environment:
       KC_PROXY: edge
       KC_HOSTNAME: auth.localhost
-      KC_HTTP_ENABLED: "true"
-    expose: ["8080"]
+      KC_HTTP_ENABLED: 'true'
+    expose: ['8080']
     labels:
       - traefik.enable=true
       - traefik.http.routers.kc.rule=Host(`auth.localhost`)
