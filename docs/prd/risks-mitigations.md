@@ -1,0 +1,11 @@
+# Risks & Mitigations
+- TLS/Certificates: Invalid SANs or mismatched hosts → Use Traefik TLS with correct hosts; ensure `MCP_SERVER_URL` matches.
+- RFC 8414 Discovery Shape: Path‑insert vs realm‑first → Add Traefik replace‑path shims; confirm both discovery URLs resolve.
+- Redirect URIs: Missing/incorrect in existing Keycloak client → Register exact HTTPS callbacks (may be the only Keycloak change).
+- Audience Binding: Strict `aud` mismatch from ChatGPT → Allow configured fallback audience with audit logging; prefer MCP URL.
+- Streaming Stability: Streamable‑HTTP/SSE timeouts through Traefik → Tune proxy timeouts/keep‑alive; verify headers.
+- Transport Evolution: Future preference shifts → Document migration; keep SSE fallback initially.
+- Token Leakage: Authorization header in logs → Enforce redaction in app and Traefik; never echo tokens.
+- CORS Scope: Over‑permissive defaults → Restrict to necessary origins or disable if not required.
+- Label Fragility: Regex/quoting errors break discovery → Ship tested label blocks and a smoke test.
+- Env Drift: `MCP_SERVER_URL` / `KC_ISSUER` / `MCP_AUDIENCE` inconsistencies → Single `.env.example`; reference consistently.

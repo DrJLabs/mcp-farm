@@ -1,0 +1,11 @@
+# Architecture Decisions (ADR Summary)
+- ADR‑001: Prefer Streamable‑HTTP; keep SSE as fallback.
+  - Rationale: Lower latency, fewer redirects; aligns with client expectations.
+- ADR‑002: In‑app JWT verification; Traefik handles TLS/routing only.
+  - Rationale: Simpler deployment, fine‑grained control; ForwardAuth deferred.
+- ADR‑003: Advertise PRM at `/.well-known/oauth-protected-resource` on MCP host.
+  - Rationale: RFC 9728 compatibility; drives 401 hint and client bootstrapping.
+- ADR‑004: RFC 8414 path‑insert shim on auth host.
+  - Rationale: Client discovery parity without realm URL knowledge.
+- ADR‑005: Bind `127.0.0.1` local; `0.0.0.0` in containers.
+  - Rationale: Container networking; safety in local runs.

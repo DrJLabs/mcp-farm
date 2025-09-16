@@ -1,0 +1,20 @@
+# Elicitation Plan (Pre‑Dev Questions)
+- Identity & OAuth:
+  - KC realm URL and client config? Token TTL, clock skew, and refresh policy?
+  - Required scopes (if any) for tools; are fine‑grained scopes needed?
+  - Audience policy: single `MCP_SERVER_URL` or dual (`MCP_ALT_AUDIENCE`) for compatibility?
+- Networking & TLS:
+  - Final hostnames and certificates; staging vs prod endpoints? HSTS desired?
+  - Any corporate proxy or split‑DNS constraints?
+- Transport & Performance:
+  - Minimum streaming cadence and max payload per chunk? Client idle timeout?
+  - Concurrency expectations (simultaneous chats) and CPU/RAM budget per container?
+- Logs & Observability:
+  - Retention days; log redaction requirements beyond Authorization header?
+  - Centralized logging target (e.g., Loki/ELK) and required fields?
+- Operations & SLOs:
+  - Target uptime (MVP) and maintenance windows? Restart policy?
+  - Backup/restore needs (config only vs data later)?
+- Compliance & Security:
+  - Any audit requirements (who accessed what, when)? Time source policy (NTP)?
+  - Threats of concern (DoS, token replay, trace leakage) and acceptance posture?
