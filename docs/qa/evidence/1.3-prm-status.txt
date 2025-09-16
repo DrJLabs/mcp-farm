@@ -1,1 +1,1 @@
-HTTP 200
+GET /.well-known/oauth-protected-resource -> HTTP 200

@@ -21,23 +21,25 @@ def auth_env(monkeypatch: pytest.MonkeyPatch):
         monkeypatch.delenv(key, raising=False)
 
 
-def test_prm_route_returns_expected_payload(auth_env):
+@pytest.mark.usefixtures("auth_env")
+def test_prm_route_returns_expected_payload():
     app = build_test_app(enable_auth=True)
     with TestClient(app) as client:
         response = client.get("/.well-known/oauth-protected-resource")
         assert response.status_code == 200
-        assert response.headers.get("cache-control") == "public, max-age=3600"
+        assert response.headers.get("cache-control") == "public, max-age=60"
         assert response.headers.get("content-type", "").split(";")[0] == "application/json"
         assert response.json() == {
-            "resource": "https://mcp.localhost",
-            "authorization_servers": ["https://auth.localhost/realms/mcp"],
+            "resource": os.environ["MCP_SERVER_URL"],
+            "authorization_servers": [os.environ["KC_ISSUER"]],
             "scopes_supported": [],
             "bearer_methods_supported": ["header"],
             "resource_name": "Cupcake MCP",
         }
 
 
-def test_unauthenticated_mcp_returns_401_with_prm_hint(auth_env):
+@pytest.mark.usefixtures("auth_env")
+def test_unauthenticated_mcp_returns_401_with_prm_hint():
     app = build_test_app(enable_auth=True)
     with TestClient(app) as client:
         response = client.get("/mcp")
@@ -46,10 +48,13 @@ def test_unauthenticated_mcp_returns_401_with_prm_hint(auth_env):
         assert header.startswith("Bearer ")
         assert 'error="invalid_token"' in header
         assert 'error_description="Authentication required"' in header
-        assert "resource_metadata=\"https://mcp.localhost/.well-known/oauth-protected-resource\"" in header
+        base = os.environ["MCP_SERVER_URL"].rstrip("/")
+        expected = f'resource_metadata="{base}/.well-known/oauth-protected-resource"'
+        assert expected in header
 
 
-def test_health_is_public_when_auth_enabled(auth_env):
+@pytest.mark.usefixtures("auth_env")
+def test_health_is_public_when_auth_enabled():
     app = build_test_app(enable_auth=True)
     with TestClient(app) as client:
         response = client.get("/healthz")

@@ -26,6 +26,7 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
                 for route in super().get_routes(mcp_path, mcp_endpoint)
                 if not (
                     isinstance(route, Route)
+                    # Filter the base provider's PRM route so we control cache headers.
                     and getattr(route, "path", None) == "/.well-known/oauth-protected-resource"
                 )
             ]
@@ -33,7 +34,7 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
             if resource_value:
                 auth_servers = [str(url) for url in self.authorization_servers]
 
-                async def prm_endpoint(request):
+                async def prm_endpoint(_request):
                     payload = {
                         "resource": resource_value,
                         "authorization_servers": auth_servers,
@@ -46,7 +47,7 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
                         payload["resource_documentation"] = str(self.resource_documentation)
 
                     response = JSONResponse(payload)
-                    response.headers["Cache-Control"] = "public, max-age=3600"
+                    response.headers["Cache-Control"] = "public, max-age=60"
                     return response
 
                 endpoint = prm_endpoint
@@ -69,7 +70,7 @@ except ModuleNotFoundError:  # pragma: no cover
         cors_middleware = None  # type: ignore
         Route = None  # type: ignore
         CupcakeRemoteAuthProvider = RemoteAuthProvider  # type: ignore
-    except Exception:  # keep app running without auth for S2
+    except ImportError:  # keep app running without auth for S2
         JWTVerifier = None  # type: ignore
         RemoteAuthProvider = None  # type: ignore
         cors_middleware = None  # type: ignore
@@ -139,7 +140,9 @@ def create_server() -> FastMCP:
             required_scopes=[],
             base_url=server_url,
         )
-        provider_cls = CupcakeRemoteAuthProvider or RemoteAuthProvider  # type: ignore[arg-type]
+        provider_cls = (
+            CupcakeRemoteAuthProvider if CupcakeRemoteAuthProvider is not None else RemoteAuthProvider
+        )
         mcp.auth = provider_cls(
             token_verifier=jwt,
             authorization_servers=[issuer],
@@ -193,7 +196,7 @@ def create_server() -> FastMCP:
 
     # Health endpoint (unauthenticated)
     @mcp.custom_route("/healthz", methods=["GET"])
-    async def healthz(request: Request) -> Response:  # type: ignore[unused-variable]
+    async def healthz(_request: Request) -> Response:
         return JSONResponse({"ok": True})
 
     return mcp
