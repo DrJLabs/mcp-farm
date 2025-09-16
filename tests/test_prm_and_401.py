@@ -10,14 +10,16 @@ from tests._utils import build_test_app, create_server_instance
 
 @pytest.fixture()
 def auth_env(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("KC_ISSUER", "https://auth.localhost/realms/mcp")
-    monkeypatch.setenv("MCP_SERVER_URL", "https://mcp.localhost")
-    monkeypatch.setenv("MCP_AUDIENCE", "https://mcp.localhost")
-    monkeypatch.setenv(
-        "KC_JWKS_URI", "https://auth.localhost/realms/mcp/protocol/openid-connect/certs"
-    )
+    auth_env_vars = {
+        "KC_ISSUER": "https://auth.localhost/realms/mcp",
+        "MCP_SERVER_URL": "https://mcp.localhost",
+        "MCP_AUDIENCE": "https://mcp.localhost",
+        "KC_JWKS_URI": "https://auth.localhost/realms/mcp/protocol/openid-connect/certs",
+    }
+    for key, value in auth_env_vars.items():
+        monkeypatch.setenv(key, value)
     yield
-    for key in ("KC_ISSUER", "MCP_SERVER_URL", "MCP_AUDIENCE", "KC_JWKS_URI"):
+    for key in auth_env_vars:
         monkeypatch.delenv(key, raising=False)
 
 
