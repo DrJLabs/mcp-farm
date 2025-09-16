@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import inspect
 import sys
 from pathlib import Path
 from typing import Any
@@ -34,16 +35,24 @@ def build_test_app(*, enable_auth: bool, stream_path: str = "/mcp"):
     """
     sample = load_sample_module()
     server = sample.create_server()
+    kwargs = {
+        "server": server,
+        "streamable_http_path": stream_path,
+        "json_response": False,
+        "stateless_http": True,
+        "debug": False,
+    }
     auth_provider = server.auth if enable_auth else None
-    # create_streamable_http_app accepts `auth` (alias for auth provider) in fastmcp>=2.5.
-    return create_streamable_http_app(
-        server=server,
-        streamable_http_path=stream_path,
-        auth=auth_provider,
-        json_response=False,
-        stateless_http=True,
-        debug=False,
-    )
+    if auth_provider is not None:
+        params = inspect.signature(create_streamable_http_app).parameters
+        if "auth" in params:
+            kwargs["auth"] = auth_provider
+        elif "auth_server_provider" in params:
+            kwargs["auth_server_provider"] = auth_provider
+        else:
+            raise RuntimeError("create_streamable_http_app has no supported auth parameter")
+
+    return create_streamable_http_app(**kwargs)
 
 
 def create_server_instance() -> Any:
