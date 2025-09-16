@@ -1,0 +1,33 @@
+story: "2.1 — Repo-Level Ruff & Prettier Baseline"
+id: "2.1"
+slug: "repo-level-ruff-prettier-baseline"
+date: "2025-09-16"
+epic: 2
+decision: PASS
+rationale: |
+  Root lint/format configuration now lives at repo level, hooks cover all Python and
+  documentation assets, and contributor guidance reflects the workflow. Commands were
+  executed to prove a clean baseline.
+conditions_to_pass:
+  - "Root pyproject.toml defines Ruff src targets (fastmcp/src, tests, sample MCP, scripts)"
+  - "Repo .pre-commit-config.yaml installs Ruff lint/format and Prettier >=3.3"
+  - "uvx ruff check . and uvx ruff format --check . succeed on clean tree"
+  - "npx prettier --check '**/*.{md,mdx,json,yaml,yml}' reports zero changes"
+  - "Documentation (docs/testing.md) updated and linked in Issue #5"
+inputs:
+  - docs/stories/2.1.repo-level-ruff-prettier-baseline.md
+  - docs/qa/assessments/2.1-risk-20250916.md
+  - docs/qa/assessments/2.1-test-design-20250916.md
+  - docs/qa/assessments/2.1-trace-20250916.md
+  - docs/qa/assessments/2.1-review-20250916.md
+  - Issue #5 comment https://github.com/DrJLabs/mcp-farm/issues/5#issuecomment-3299958054
+frnfr_map:
+  FR-tooling-baseline: PASS
+  NFR-devex: PASS
+  NFR-ci-ready: PASS
+  NFR-docs: PASS
+evidence:
+  - pyproject.toml
+  - .pre-commit-config.yaml
+  - docs/testing.md
+  - Prettier/Ruff command outputs in Issue #5

@@ -5,6 +5,7 @@ Purpose: Give the Scrum Master a precise map from PRD/Architecture shards to sto
 Note: File paths are workspace‑relative.
 
 ## S1 — Bootstrap env and healthcheck
+
 - Inputs:
   - docs/prd/epic-list.md
   - docs/architecture/observability-health.md
@@ -16,6 +17,7 @@ Note: File paths are workspace‑relative.
   - docs/validation.md (Health step) and curl output in commit/PR.
 
 ## S2 — Traefik routing + TLS labels
+
 - Inputs:
   - docs/prd/epic-list.md
   - docs/architecture/reference-deployment-docker-traefik-proposed.md
@@ -26,6 +28,7 @@ Note: File paths are workspace‑relative.
   - docs/validation.md (Health via Traefik) evidence.
 
 ## S3 — PRM + 401 hint
+
 - Inputs:
   - docs/prd/requirements.md (FR1–FR2)
   - docs/architecture/prm-shape-minimal-example-mvp.md
@@ -37,6 +40,7 @@ Note: File paths are workspace‑relative.
   - Curl outputs stored in PR/issue.
 
 ## S4 — OAuth 2.1 validation (JWKS, iss/aud)
+
 - Inputs:
   - docs/prd/requirements.md (FR3)
   - docs/architecture/security-controls.md
@@ -49,6 +53,7 @@ Note: File paths are workspace‑relative.
   - OIDC/JWKS curls; successful authenticated call (any minimal tool call OK).
 
 ## S5 — Streamable‑HTTP transport (preferred) + SSE fallback
+
 - Inputs:
   - docs/prd/requirements.md (FR4, FR8)
   - docs/architecture/performance-slos-mvp-targets.md
@@ -60,6 +65,7 @@ Note: File paths are workspace‑relative.
   - Stream smoke output in PR; note p95 TTFB < 2s or chunk cadence ≥ 10.
 
 ## S6 — RFC 8414 path‑insert shim
+
 - Inputs:
   - docs/prd/requirements.md (FR6)
   - docs/architecture/reference-deployment-docker-traefik-proposed.md
@@ -71,6 +77,7 @@ Note: File paths are workspace‑relative.
   - Curl outputs for both shimmed endpoints.
 
 ## S7 — ChatGPT Developer‑mode onboarding + validation scripts
+
 - Inputs:
   - docs/onboarding-chatgpt.md
   - scripts/validate_mvp.sh
@@ -81,12 +88,14 @@ Note: File paths are workspace‑relative.
   - Screenshot(s) and logs attached to PR/issue.
 
 ## Cross‑Cutting References
+
 - Out‑of‑Scope (guardrails): docs/prd/out-of-scope-mvp.md
 - SLOs & Perf: docs/architecture/performance-slos-mvp-targets.md
 - Security: docs/architecture/security-controls.md
 - ADRs (accepted): docs/adr/README.md
 
 ## Suggested Story Structure (per Sx)
+
 - Story: “Sx: <title>”
 - Acceptance Criteria: Gate reference + concrete curl/script outputs.
 - Tasks: update code/labels/envs; run validation; attach evidence.

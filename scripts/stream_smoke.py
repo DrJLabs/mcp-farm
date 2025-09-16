@@ -10,6 +10,7 @@ Requires:
 
 import asyncio
 import os
+
 from fastmcp.client import Client
 from fastmcp.client.transports import StreamableHttpTransport
 
@@ -27,4 +28,3 @@ async def main() -> None:
 
 if __name__ == "__main__":
     asyncio.run(main())
-

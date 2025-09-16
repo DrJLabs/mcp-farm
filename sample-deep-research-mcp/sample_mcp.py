@@ -1,14 +1,16 @@
-import os
 import json
+import os
 from pathlib import Path
 from typing import Any
 
 from fastmcp.server import FastMCP
+
 # FastMCP auth import compatibility: fallback when module layout differs
 try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
-    from fastmcp.server.auth import JWTVerifier, RemoteAuthProvider  # type: ignore
     from mcp.server.auth.routes import cors_middleware
     from starlette.routing import Route
+
+    from fastmcp.server.auth import JWTVerifier, RemoteAuthProvider  # type: ignore
 
     class CupcakeRemoteAuthProvider(RemoteAuthProvider):
         """Remote auth provider that keeps PRM metadata aligned with MCP_SERVER_URL."""
@@ -20,14 +22,17 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
                 self._cupcake_resource_url = base_url_str.rstrip("/") or base_url_str
             super().__init__(*args, base_url=base_url, **kwargs)
 
-        def get_routes(self, mcp_path: str | None = None, mcp_endpoint: Any | None = None):  # type: ignore[override]
+        def get_routes(
+            self, mcp_path: str | None = None, mcp_endpoint: Any | None = None
+        ):  # type: ignore[override]
             routes = [
                 route
                 for route in super().get_routes(mcp_path, mcp_endpoint)
                 if not (
                     isinstance(route, Route)
                     # Filter the base provider's PRM route so we control cache headers.
-                    and getattr(route, "path", None) == "/.well-known/oauth-protected-resource"
+                    and getattr(route, "path", None)
+                    == "/.well-known/oauth-protected-resource"
                 )
             ]
             resource_value = self._cupcake_resource_url
@@ -44,7 +49,9 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
                     if self.resource_name:
                         payload["resource_name"] = self.resource_name
                     if self.resource_documentation:
-                        payload["resource_documentation"] = str(self.resource_documentation)
+                        payload["resource_documentation"] = str(
+                            self.resource_documentation
+                        )
 
                     response = JSONResponse(payload)
                     response.headers["Cache-Control"] = "public, max-age=60"
@@ -67,6 +74,7 @@ try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
 except ModuleNotFoundError:  # pragma: no cover
     try:
         from fastmcp.auth import JWTVerifier, RemoteAuthProvider  # type: ignore
+
         cors_middleware = None  # type: ignore
         Route = None  # type: ignore
         CupcakeRemoteAuthProvider = RemoteAuthProvider  # type: ignore
@@ -83,13 +91,16 @@ from starlette.responses import JSONResponse, Response
 RECORDS = json.loads(Path(__file__).with_name("records.json").read_text())
 LOOKUP = {r["id"]: r for r in RECORDS}
 
+
 class SearchResult(BaseModel):
     id: str
     title: str
     text: str
 
+
 class SearchResultPage(BaseModel):
     results: list[SearchResult]
+
 
 class FetchResult(BaseModel):
     id: str
@@ -97,6 +108,7 @@ class FetchResult(BaseModel):
     text: str
     url: str | None = None
     metadata: dict[str, str] | None = None
+
 
 def _env(name: str, default: str | None = None) -> str | None:
     v = os.environ.get(name)
@@ -125,7 +137,9 @@ def create_server() -> FastMCP:
     audience_alt = _env("MCP_ALT_AUDIENCE")
 
     if issuer and server_url and JWTVerifier and RemoteAuthProvider:
-        jwks_uri = _env("KC_JWKS_URI", issuer.rstrip("/") + "/protocol/openid-connect/certs")
+        jwks_uri = _env(
+            "KC_JWKS_URI", issuer.rstrip("/") + "/protocol/openid-connect/certs"
+        )
 
         audiences: list[str] | str
         if audience_alt:
@@ -141,7 +155,9 @@ def create_server() -> FastMCP:
             base_url=server_url,
         )
         provider_cls = (
-            CupcakeRemoteAuthProvider if CupcakeRemoteAuthProvider is not None else RemoteAuthProvider
+            CupcakeRemoteAuthProvider
+            if CupcakeRemoteAuthProvider is not None
+            else RemoteAuthProvider
         )
         mcp.auth = provider_cls(
             token_verifier=jwt,
@@ -169,7 +185,9 @@ def create_server() -> FastMCP:
             ).lower()
             if any(t in hay for t in toks):
                 results.append(
-                    SearchResult(id=r["id"], title=r.get("title", ""), text=r.get("text", ""))
+                    SearchResult(
+                        id=r["id"], title=r.get("title", ""), text=r.get("text", "")
+                    )
                 )
 
         # Return the Pydantic model (FastMCP will serialise it for us)
