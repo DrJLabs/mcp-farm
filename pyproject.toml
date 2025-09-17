@@ -1,3 +1,23 @@
+[project]
+name = "mcp-farm"
+version = "0.0.1"
+description = "Integration tests and tooling that exercise the local FastMCP workspace."
+readme = "docs/prd.md"
+requires-python = ">=3.10"
+dependencies = [
+  "fastmcp",
+  "fastapi>=0.115.12",
+  "pytest>=8.3.3",
+  "pytest-asyncio>=0.23.5",
+  "pytest-httpx>=0.35.0",
+  "pytest-timeout>=2.4.0",
+  "pytest-xdist>=3.6.1",
+  "ty>=0.0.1a19",
+]
+
+[tool.uv.sources]
+fastmcp = { path = "fastmcp", editable = true }
+
 [tool.ruff]
 target-version = "py311"
 src = [
@@ -14,3 +34,21 @@ extend-select = ["I", "UP"]
 indent-style = "space"
 line-ending = "lf"
 
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = [
+  "fastmcp/src",
+  "fastmcp/tests",
+  "sample-deep-research-mcp",
+  "tests",
+]
+exclude = ["**/node_modules", "**/__pycache__", ".venv", ".git", "dist"]
+respect-ignore-files = true
+
+[tool.ty.rules]
+# Tracking outstanding suppressions in Issue #5 until follow-up tasks land.
+no-matching-overload = "ignore" # 126 errors
+unknown-argument = "ignore"     # 61 errors
+call-non-callable = "ignore"     # 7 errors

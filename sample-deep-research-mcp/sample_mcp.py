@@ -7,10 +7,9 @@ from fastmcp.server import FastMCP
 
 # FastMCP auth import compatibility: fallback when module layout differs
 try:  # fastmcp >=2.5 may expose auth at fastmcp.auth
+    from fastmcp.server.auth import JWTVerifier, RemoteAuthProvider  # type: ignore
     from mcp.server.auth.routes import cors_middleware
     from starlette.routing import Route
-
-    from fastmcp.server.auth import JWTVerifier, RemoteAuthProvider  # type: ignore
 
     class CupcakeRemoteAuthProvider(RemoteAuthProvider):
         """Remote auth provider that keeps PRM metadata aligned with MCP_SERVER_URL."""
