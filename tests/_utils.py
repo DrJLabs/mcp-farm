@@ -6,10 +6,13 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from fastmcp.server.http import create_streamable_http_app
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 _FASTMCP_SRC = REPO_ROOT / "fastmcp" / "src"
+
+if str(_FASTMCP_SRC) not in sys.path:
+    sys.path.insert(0, str(_FASTMCP_SRC))
+
+from fastmcp.server.http import create_streamable_http_app
 _SAMPLE_PATH = REPO_ROOT / "sample-deep-research-mcp" / "sample_mcp.py"
 
 
@@ -35,26 +38,27 @@ def build_test_app(*, enable_auth: bool, stream_path: str = "/mcp"):
     """
     sample = load_sample_module()
     server = sample.create_server()
-    kwargs = {
-        "server": server,
-        "streamable_http_path": stream_path,
-        "json_response": False,
-        "stateless_http": True,
-        "debug": False,
-    }
+    auth_kwargs: dict[str, Any] = {}
     auth_provider = server.auth if enable_auth else None
     if auth_provider is not None:
         params = inspect.signature(create_streamable_http_app).parameters
         if "auth" in params:
-            kwargs["auth"] = auth_provider
+            auth_kwargs = {"auth": auth_provider}
         elif "auth_server_provider" in params:
-            kwargs["auth_server_provider"] = auth_provider
+            auth_kwargs = {"auth_server_provider": auth_provider}
         else:
             raise RuntimeError(
                 "create_streamable_http_app has no supported auth parameter"
             )
 
-    return create_streamable_http_app(**kwargs)
+    return create_streamable_http_app(
+        server=server,
+        streamable_http_path=stream_path,
+        json_response=False,
+        stateless_http=True,
+        debug=False,
+        **auth_kwargs,
+    )
 
 
 def create_server_instance() -> Any:
